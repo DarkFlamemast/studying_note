@@ -285,3 +285,54 @@ print(harem.wife_1)
     
 ```
 
+
+
+
+
+## 进阶
+
+### defaultdict
+
+当我使用普通的字典时，用法一般是dict={},添加元素的只需要dict[element] =value即，调用的时候也是如此，dict[element] = xxx,但前提是element字典里，如果不在字典里就会报错这时defaultdict就能排上用场了，defaultdict的作用是在于，当字典里的key不存在但被查找时，返回的不是keyError而是一个默认值
+
+```python
+from collections import defaultdict
+dict =defaultdict( factory_function)
+```
+
+这个factory_function可以是list、set、str等等，作用是当key不存在时，返回的是工厂函数的默认值，比如list对应[ ]，str对应的是空字符串，set对应set( )，int对应0
+
+
+
+
+
+### lambda函数
+
+是指一类无需定义标识符（函数名）的函数或子程序。
+lambda 函数可以接收任意多个参数 (包括可选参数) 并且返回单个表达式的值。
+
+```python
+#第一种用法  将lambda函数赋值给一个变量，通过这个变量间接调用该lambda函数。
+#不使用lambda函数
+def sum(x,y):
+    return x+y
+print(sum(1,2))
+
+#使用lambda函数
+sum = lambda x,y : x+y
+print(sum(1,2))
+
+#第二种用法  将lambda函数作为参数传递给其他函数。部分Python内置函数接收函数作为参数。
+#不使用lambda函数
+def odd(x):
+    return x%2
+temp = range(10)
+show = filter(odd,temp)
+print(list(show))   #[1, 3, 5, 7, 9]
+
+#使用lambda函数
+print(list(filter(lambda x: x%2,range(10))))    #[1, 3, 5, 7, 9]
+```
+
+
+
