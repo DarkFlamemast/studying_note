@@ -261,7 +261,19 @@ for name,status in harem.items():
 
 
 
+
+
+
+
+
+
+
+
 ## 类与面向对象
+
+### 基本概念
+
+
 
 ```python
 class Harem:       #类的创建
@@ -271,6 +283,9 @@ class Harem:       #类的创建
     #进行类的实例化时，初始化方法会自动被执行
     def __init__(self):
         print('初始化方法')
+    #直接打印实例的结果是__str__的返回值
+    def __str__(self):
+        return '老婆是{}'.format(wife_1)
     def daily_work(self):   #实例方法的创建
         print('亲亲')
     def kiss(self):
@@ -279,11 +294,72 @@ class Harem:       #类的创建
     
 #类的实例化
 harem=Harem()
+
+print(harem)
+#输出：老婆是阿比
 print(harem.wife_1)
 #输出：阿比
     
     
 ```
+
+
+
+
+
+### 类的继承
+
+1. **单一继承**
+
+   ```python
+   class Harem_part_one(Harem):
+       pass
+   
+   harem = Harem_part_one()
+   print(harem)
+   #输出：老婆是阿比
+   ```
+
+   我们可以看到，Harem_part_one 类中什么都没有，实例化出来的 harem 却拥有 Harem 类的属性和方法。我们通过 class 子类名(父类名) 的方式实现了类的继承，让子类拥有了父类的所有属性和方法
+
+
+
+2. **多重继承**
+
+   ```python
+   ```
+
+   
+
+   
+
+   
+
+   我们可以看到，ABC 类继承了 Chinese 类和 American 类的所有属性和方法，但 hair 和 skin 这两个类都有的属性，ABC 类只继承了 Chinese 类的。
+
+    
+
+   这是因为 class ABC(Chinese, American): 中 Chinese 靠前，调用实例的属性和方法时会优先在子类中查找，找不到再从最左侧的父类依次往右查找，直到找到为止，如果都没有找到则会报错。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

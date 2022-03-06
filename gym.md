@@ -55,3 +55,6 @@ class SnakeEnv(gym.Env):
 
 ```
 
+
+
+step()方法：输入为动作，输出为回报。
