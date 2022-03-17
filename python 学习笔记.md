@@ -16,7 +16,7 @@
 
 排序：list.sort()
 
-反转：list.reserve()
+反转：list.reverse()
 
 复制：list.copy()
 

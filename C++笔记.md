@@ -1,5 +1,7 @@
 # C++笔记
 
+**本笔记大量参考自黑马程序员C++教程**
+
 
 
 ## 内存分区模型
@@ -115,3 +117,275 @@ int main() {
 
 
 ## 引用
+
+### 基本概念
+
+**作用： **给变量起别名
+
+**语法：** `数据类型 &别名 = 原名`
+
+示例
+
+```c++
+int main() {
+
+	int a = 10;
+	int &b = a;
+
+	b = 100;
+
+	cout << "a = " << a << endl;
+	cout << "b = " << b << endl;
+
+	system("pause");
+
+	return 0;
+}
+//输出：a = 100   b = 100
+```
+
+
+
+### 引用注意事项
+
+1. 引用必须初始化
+2. 引用初始化后不可改变
+
+示例
+
+```c++
+int main() {
+
+	int a = 10;
+	int b = 20;
+	//int &c; //错误，引用必须初始化
+	int &c = a; //一旦初始化后，就不可以更改
+	c = b; //这是赋值操作，不是更改引用
+
+	cout << "a = " << a << endl;
+	cout << "b = " << b << endl;
+	cout << "c = " << c << endl;
+
+	system("pause");
+
+	return 0;
+}
+
+/*
+输出：a = 20
+     b = 20
+     c = 20
+/*
+```
+
+
+
+
+
+### 引用做函数参数
+
+**作用：**函数传参时，可以利用引用的技术让形参修饰实参
+
+**优点：**可以简化指针修改实参
+
+
+
+```c++
+//2. 地址传递
+void mySwap02(int* a, int* b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+//3. 引用传递
+void mySwap03(int& a, int& b) {
+	int temp = a;
+	a = b;
+	b = temp;
+}
+```
+
+
+
+
+
+### 引用做函数返回值
+
+引用是可以作为函数的返回值存在
+
+函数调用是可以作为左值
+
+```c++
+int& test02() {
+	static int a = 20;
+	return a;
+}
+
+int main()
+{
+	test02() = 1000;
+	cout << "ref2 = " << ref2 << endl;
+}
+//输出：ref2 = 1000
+```
+
+
+
+**注意：不要返回局部变量引用**
+
+```c++
+int& test01() {
+	int a = 10; 
+	return a;
+}
+//错误写法
+//局部变量在函数执行完会被释放
+```
+
+
+
+
+
+### 引用的本质
+
+引用的本质在c++内部实现是一个指针常量
+
+```c++
+int main(){
+	int a = 10;
+    
+	int& ref = a; //系统自动转换为 int* const ref = &a
+	ref = 20; //系统发现ref是引用，自动帮我们转换为: *ref = 20;
+    
+	cout << "a:" << a << endl;
+	cout << "ref:" << ref << endl;
+    //输出：a:20
+    //     ref:20
+```
+
+
+
+### 常量引用
+
+常量引用主要用来修饰形参，防止误操作
+
+在函数形参列表中，可以加==const修饰形参==，防止形参改变实参
+
+```c++
+void showValue(const int& v) {
+	//v += 10;  如果加这行会报错
+	cout << v << endl;
+}
+
+int main() {
+
+	//int& ref = 10;  引用本身需要一个合法的内存空间，因此这行错误
+	//加入const就可以了，编译器优化代码，int temp = 10; const int& ref = temp;
+	const int& ref = 10;
+
+	//ref = 100;  //加入const后不可以修改变量
+	//cout << ref << endl;
+
+	//函数中利用常量引用防止误操作修改实参
+	int a = 10;
+	showValue(a);
+
+	system("pause");
+
+	return 0;
+}
+```
+
+
+
+
+
+
+
+## 函数进阶
+
+### 默认函数
+
+函数的形参列表中的形参是可以有默认值的。
+
+语法：` 返回值类型  函数名 (参数= 默认值)`
+
+**含有默认值的参数必须放在最后**
+
+**如果函数声明有默认值，函数实现的时候就不能有默认参数**
+
+```c++
+int func2(int a = 10, int b = 10);
+int func2(int a, int b) {
+	return a + b;
+}
+```
+
+
+
+
+
+### 函数占位参数
+
+C++中函数的形参列表里可以有占位参数，用来做占位，调用函数时必须填补该位置
+
+```c++
+//函数占位参数 ，占位参数也可以有默认参数
+void func(int a, int) {
+	cout << "this is func" << endl;
+}
+
+int main() {
+
+	func(10,10); //占位参数必须填补
+
+	system("pause");
+
+	return 0;
+}
+```
+
+
+
+
+
+### 函数重载
+
+函数名可以相同，提高复用性
+
+**函数重载满足条件：**
+
+* 同一个作用域下
+* 函数名称相同
+* 函数参数**类型不同**  或者 **个数不同** 或者 **顺序不同**
+
+```c++
+//函数重载需要函数都在同一个作用域下
+void func()
+{
+	cout << "func 的调用！" << endl;
+}
+void func(int a)
+{
+	cout << "func (int a) 的调用！" << endl;
+}
+void func(double a)
+{
+	cout << "func (double a)的调用！" << endl;
+}
+void func(int a ,double b)
+{
+	cout << "func (int a ,double b) 的调用！" << endl;
+}
+void func(double a ,int b)
+{
+	cout << "func (double a ,int b)的调用！" << endl;
+}
+//函数返回值不可以作为函数重载条件
+//int func(double a, int b)
+//{
+//	cout << "func (double a ,int b)的调用！" << endl;
+//}
+```
+
